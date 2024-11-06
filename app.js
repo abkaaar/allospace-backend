@@ -106,10 +106,3 @@ process.on("unhandledRejection", (err, promise) => {
 });
 
 
-
-// app.use(function (err, req, res, next) {
-//   res.status(err.status || 500).json({
-//     message: err.message,
-//     error: req.app.get("env") === "development" ? err : {}
-//   })
-// });

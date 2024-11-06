@@ -32,7 +32,7 @@ module.exports.errorHandler = (err, req, res, next) => {
   res.status(error.statusCode || 500).json({
     success: false,
     error: error.message || "Server Error",
-    ...(req.app.get("env") === "development" && { stack: err.stack }) // Stack trace only in development
+    ...(req.app.get("env") === "development" && { stack: error.stack }) // Stack trace only in development
   });
 };
 
