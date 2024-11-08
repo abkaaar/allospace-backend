@@ -8,7 +8,7 @@ var logger = require("morgan");
 
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { DATABASE_URL, PORT, FRONTEND_URL } = process.env;
+const { DATABASE_URL, PORT} = process.env;
 const AuthRoute = require('./routes/AuthRoute')
 const SpaceRoute = require('./routes/spaceRoute')
 const BookRoute = require('./routes/BookingRoute');
@@ -18,6 +18,7 @@ const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const compression = require("compression");
 
+
 // mongoose
 //   .connect(DATABASE_URL, {
 //     useNewUrlParser: true,
@@ -25,6 +26,11 @@ const compression = require("compression");
 //   })
 //   .then(() => console.log("MongoDB is  connected successfully"))
 //   .catch((err) => console.error(err));
+
+
+
+
+///
 
 const connectWithRetry = async (retries = 5, delay = 5000) => {
   try {
@@ -47,8 +53,24 @@ const connectWithRetry = async (retries = 5, delay = 5000) => {
 // Call the function to connect
 connectWithRetry();
 
+
 var app = express();
-     
+
+
+const allowedOrigins = ['https://allospace.co', 'http://localhost:5173'];
+
+app.use(cors({
+  origin: function (origin, callback) {
+    if (allowedOrigins.includes(origin) || !origin) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
+  credentials: true // Enable if your app requires cookies
+}));
+
+
 
 //performance Middleware
 app.use(helmet());
@@ -71,14 +93,25 @@ app.use(express.json({ limit: "10mb" })); // Increase JSON payload size limit
 app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 
-app.use(
-  cors({
-    origin: "https://allospace.co",
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: ['http://localhost:5173', 'https://allospace.co'],
+//     methods: ["GET", "POST", "PUT", "DELETE"],
+//     credentials: true,
+//   })
+// );
 
+
+
+
+// Optional logging middleware to verify headers
+app.use((req, res, next) => {
+  res.on('finish', () => {
+    console.log(`Request Origin: ${req.headers.origin}`);
+    console.log('Access-Control-Allow-Origin:', res.get('Access-Control-Allow-Origin'));
+  });
+  next();
+});
 
 // routes connection
 app.use("/api/auth", AuthRoute);
