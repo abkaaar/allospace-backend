@@ -8,7 +8,7 @@ var logger = require("morgan");
 
 const mongoose = require("mongoose");
 const cors = require("cors");
-const { DATABASE_URL, PORT } = process.env;
+const { DATABASE_URL, PORT, FRONTEND_URL } = process.env;
 const AuthRoute = require('./routes/AuthRoute')
 const SpaceRoute = require('./routes/spaceRoute')
 const BookRoute = require('./routes/BookingRoute');
@@ -73,7 +73,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL,
+    origin: FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
