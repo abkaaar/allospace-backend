@@ -1,13 +1,11 @@
 const express = require('express');
 const router = express.Router();
-// const space = require('../controllers/SpaceController')
 const book = require('../controllers/BookingController')
 const auth = require('../middlewares/AuthMiddleware');
 
 
 
 // customer booking routes
-// router.post('/book/', auth.userVerification, space.addSpace)
 router.post('/book', book.createBooking)
 router.delete('/book/:id', book.deleteBooking)
 router.get('/user/bookings', auth.userVerification, book.getBookings);
