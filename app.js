@@ -73,7 +73,7 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(
   cors({
-    origin: FRONTEND_URL,
+    origin: "https://allospace.co",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
   })
