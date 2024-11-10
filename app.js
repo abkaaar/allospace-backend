@@ -50,7 +50,7 @@ const connectWithRetry = async (retries = 5, delay = 5000) => {
   }
 };
 
-// Call the function to connect
+// Call the function to connect e
 connectWithRetry();
 
 
