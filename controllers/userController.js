@@ -124,6 +124,7 @@ module.exports.getUser = asyncHandler(async (req, res) => {
   }
 
   res.status(200).json({ success: true, user });
+
 });
 
 module.exports.Payment = asyncHandler(async (req, res, next) => {
