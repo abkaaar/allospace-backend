@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const Space = require("../models/Space");
 const { createSecretToken } = require("../utils/SecretToken");
 const bcrypt = require("bcryptjs");
 const sendEmail = require("../utils/sendEmail");
@@ -101,12 +102,26 @@ module.exports.updateUser = asyncHandler(async (req, res, next) => {
   const userId = req.user._id; // Assuming you have user info from JWT middleware
   const updatedData = req.body;
 
+
+
   const updatedUser = await User.findByIdAndUpdate(userId, updatedData, {
     new: true,
   });
 
   if (!updatedUser) {
     return res.status(404).json({ message: "User not found" });
+  }
+
+  console.log("updated user",updatedUser)
+
+  // If the address was updated, reflect the change in the Space model
+  if (updatedData.address) {
+    console.log('Updating spaces with new address:', updatedData.address);
+
+    await Space.updateMany(
+      { address: updatedUser.address  }, // Find spaces linked to this user's address
+      { $set: { address: updatedData.address } } // Update with new address
+    );
   }
 
   res

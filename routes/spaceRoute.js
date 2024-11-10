@@ -6,9 +6,9 @@ const upload = require('../config/multer');
 
 
 // space routes
-router.post('/user/space/add', auth.userVerification, upload.array('images', 4), space.addSpace)
-router.put('/user/space/edit/:id', auth.userVerification,upload.array('images', 4), space.editSpace)
-router.get('/user/space/:id', space.getSpace);
+router.post('/add', auth.userVerification, upload.array('images', 4), space.addSpace)
+router.put('/edit/:id', auth.userVerification,upload.array('images', 4), space.editSpace)
+router.get('/space/:id', space.getSpace);
 router.delete('/user/spaces/:id', space.deleteSpace)
 router.get('/user/spaces', auth.userVerification, space.getUserSpaces);
 

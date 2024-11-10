@@ -10,7 +10,7 @@ module.exports.addSpace = asyncHandler(async (req, res, next) => {
   const {
     name,
     description,
-    location,
+    address,
     capacity,
     amenities,
     price,
@@ -45,7 +45,7 @@ module.exports.addSpace = asyncHandler(async (req, res, next) => {
     const newSpace = new Space({
       name,
       description,
-      location,
+      address,
       capacity,
       amenities, // Make sure it's an array,
       price,
@@ -87,7 +87,7 @@ module.exports.editSpace = asyncHandler(async (req, res) => {
       name,
       description,
       capacity,
-      location,
+      address,
       price,
       type,
       term,
@@ -100,7 +100,7 @@ module.exports.editSpace = asyncHandler(async (req, res) => {
     space.name = name || space.name;
     space.description = description || space.description;
     space.capacity = capacity || space.capacity;
-    space.location = location || space.location;
+    space.address = address || space.address;
     space.price = price || space.price;
     space.type = type || space.type;
     space.term = term || space.term;
@@ -202,7 +202,7 @@ module.exports.getSpace = asyncHandler(async (req, res) => {
 module.exports.getAllSpaces = asyncHandler(async (req, res) => {
 
     // Find all spaces created by the user
-    const allSpaces = await Space.find();
+    const allSpaces = await Space.find().populate('address', 'address');
 
 
     if (allSpaces.length === 0) {
@@ -216,29 +216,30 @@ module.exports.getAllSpaces = asyncHandler(async (req, res) => {
       message: "Spaces retrieved successfully",
       data: allSpaces,
     });
+    console.log(allSpaces)
   });
 
 // Search spaces
 module.exports.searchSpaces = asyncHandler(async (req, res) => {
   
-    const { location } = req.query; // Get location from query params
+    const { address } = req.query; // Get address from query params
 
-    if (!location) {
+    if (!address) {
       return res.status(400).json({
         success: false,
-        message: "Location is required to perform the search",
+        message: "address is required to perform the search",
       });
     }
 
-    // Perform a case-insensitive search for spaces by location
+    // Perform a case-insensitive search for spaces by address
     const spaces = await Space.find({
-      location: { $regex: new RegExp(location, "i") },
-    });
+      address: { $regex: new RegExp(address, "i") },
+    }).populate('address', 'address');
 
     if (spaces.length === 0) {
       return res.status(404).json({
         success: false,
-        message: "No spaces found at this location",
+        message: "No spaces found at this address",
       });
     }
 
@@ -264,7 +265,7 @@ module.exports.searchSpaces = asyncHandler(async (req, res) => {
 //     });
 //   }
 
-//   // Perform a case-insensitive search for spaces by location
+//   // Perform a case-insensitive search for spaces by address
 //   const spaces = await Space.find({
 //     type: { $regex: new RegExp(`^${type}$`) },
 //   });

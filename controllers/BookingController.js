@@ -118,7 +118,7 @@ exports.getBookings = async (req, res) => {
     // Find bookings for the extracted space IDs
     const bookings = await Booking.find({ space_id: { $in: spaceIds } })
       .populate("user_id", "name email") // Optional: Populate user details
-      .populate("space_id", "name location"); // Optional: Populate space details
+      .populate("space_id", "name address"); // Optional: Populate space details
 
     if (bookings.length === 0) {
       return res.status(404).json({

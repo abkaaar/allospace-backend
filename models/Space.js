@@ -24,7 +24,7 @@ const SpaceSchema = new mongoose.Schema({
     type: String,
     trim: true,
   },
-  location: {
+  address: {
     type: String,
     trim: true,
   },
