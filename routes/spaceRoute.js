@@ -21,6 +21,6 @@ router.get('/spaces', space.getAllSpaces);
 //  1. where do you need a space; meaning Location?
 // 2. which type of spcae; co-working space?, meeting or conference rooms etc.
 // 3. purpose of space; rent or daily book?
-router.get('/spaces/search', space.searchSpaces); 
+router.get('/search', space.searchSpaces); 
 
 module.exports = router;
