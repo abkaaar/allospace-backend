@@ -5,7 +5,7 @@ const auth = require('../middlewares/AuthMiddleware');
 const upload = require('../config/multer');
 
 
-// space routes
+// space routess
 router.post('/add', auth.userVerification, upload.array('images', 4), space.addSpace)
 router.put('/edit/:id', auth.userVerification,upload.array('images', 4), space.editSpace)
 router.get('/space/:id', space.getSpace);
