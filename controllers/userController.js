@@ -50,9 +50,7 @@ module.exports.Signup = asyncHandler(async (req, res, next) => {
 
   res.cookie("token", token, {
     withCredentials: true,
-    httpOnly: true,
-    secure: true,  
-    sameSite: "none", // Protects against cross-site request forgery
+    httpOnly: false,
   });
 
   res.status(201).json({
@@ -81,9 +79,7 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
   const token = createSecretToken(user._id);
   res.cookie("token", token, {
     withCredentials: true,
-    httpOnly: true,
-    secure: true,  
-    sameSite: "none", // Protects against cross-site request forgery
+    httpOnly: false,
   });
   res.status(201).json({
     message: "User logged in successfully",
