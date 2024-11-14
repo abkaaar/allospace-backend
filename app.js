@@ -46,11 +46,10 @@ connectWithRetry();
 var app = express();
 
 const allowedOrigins = ["https://allospace.co", "http://localhost:5173"];
-
 app.use(
   cors({
     origin: function (origin, callback) {
-      if (allowedOrigins.includes(origin) || !origin) {
+      if (!origin || allowedOrigins.includes(origin)) {
         callback(null, true);
       } else {
         callback(new Error("Not allowed by CORS"));
