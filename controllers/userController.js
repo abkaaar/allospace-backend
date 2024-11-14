@@ -72,17 +72,18 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
   }
   const auth = await bcrypt.compare(password, user.password);
   if (!auth) {
-    return res.status(401).json({ message: "Invalid credentials" }, 401);
+    return res.status(401).json({ message: "Invalid credentials" });
   }
 
   // create token
   const token = createSecretToken(user._id);
   res.cookie("token", token, {
-    withCredentials: true,
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "None"
+    sameSite: "None",
+    maxAge: 24 * 60 * 60 * 1000, // Optional: 1 day expiration for the cookie
   });
+
   res.status(201).json({
     message: "User logged in successfully",
     success: true,

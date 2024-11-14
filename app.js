@@ -17,7 +17,7 @@ const { errorHandler } = require("./middlewares/error");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const compression = require("compression");
-const session = require('express-session');
+
 
 const PORT = process.env.PORT || 3000;
 
@@ -60,22 +60,6 @@ app.use(
     credentials: true, // Enable if your app requires cookies
   })
 );
-
-app.use(
-  session({
-    name: 'sessionId', // Custom name for the session ID cookie
-    secret: process.env.TOKEN_KEY, // Use a strong, unique secret
-    resave: false, // Prevents session data from being resaved if it hasn’t changed
-    saveUninitialized: false, // Don’t save uninitialized sessions
-    cookie: {
-      httpOnly: true, // Ensures the cookie is inaccessible to client-side scripts
-      secure: process.env.NODE_ENV === 'production', // Set to true if using HTTPS in production
-      sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax', // Allows cookies in cross-site requests in production
-      maxAge: 1000 * 60 * 60 * 24, // Set an expiration time (e.g., 1 day)
-    },
-  })
-);
-
 
 //performance Middleware
 app.use(helmet());
