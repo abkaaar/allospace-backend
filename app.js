@@ -44,6 +44,7 @@ const connectWithRetry = async (retries = 5, delay = 5000) => {
 connectWithRetry();
 
 var app = express();
+app.set('trust proxy', 1); // Trust the first proxy
 
 const allowedOrigins = ["https://allospace.co", "http://localhost:5173"];
 app.use(
