@@ -84,6 +84,8 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
     maxAge: 24 * 60 * 60 * 1000, // Optional: 1 day expiration for the cookie
   });
 
+  console.log("TOKEN: ", token)
+
   res.status(201).json({
     message: "User logged in successfully",
     success: true,
