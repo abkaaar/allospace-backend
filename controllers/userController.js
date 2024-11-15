@@ -79,7 +79,8 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
   const token = createSecretToken(user._id);
   res.cookie("token", token, {
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: true,
+    // secure: process.env.NODE_ENV === "production",
     sameSite: "None",
     maxAge: 24 * 60 * 60 * 1000, // Optional: 1 day expiration for the cookie
   });
