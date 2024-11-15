@@ -22,12 +22,22 @@ module.exports.errorHandler = (err, req, res, next) => {
   }
 
   // Handle JSON Web Token errors
-  if (err.name === "JsonWebTokenError") {
-    const message = "Invalid token, please log in again";
+  // if (err.name === "JsonWebTokenError") {
+  //   const message = "Invalid token, please log in again";
+  //   error = new ErrorResponse(message, 401);
+  // }
+  if (err.name === "JsonWebTokenError" || err.name === "TokenExpiredError") {
+    const message = err.name === "TokenExpiredError"
+      ? "Token expired, please log in again"
+      : "Invalid token, please log in again";
     error = new ErrorResponse(message, 401);
   }
-
-  console.log(error.message);
+  // 
+  console.error({
+    message: error.message,
+    stack: process.env.NODE_ENV === "development" ? error.stack : null,
+    name: error.name,
+  });
 
   res.status(error.statusCode || 500).json({
     success: false,
