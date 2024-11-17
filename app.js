@@ -8,7 +8,7 @@ var logger = require("morgan");
 
 const mongoose = require("mongoose");
 const cors = require("cors");
-const  DATABASE_URL = process.env.DATABASE_URL;
+const DATABASE_URL = process.env.DATABASE_URL;
 const AuthRoute = require("./routes/AuthRoute");
 const SpaceRoute = require("./routes/spaceRoute");
 const BookRoute = require("./routes/BookingRoute");
@@ -17,7 +17,6 @@ const { errorHandler } = require("./middlewares/error");
 const rateLimit = require("express-rate-limit");
 const helmet = require("helmet");
 const compression = require("compression");
-
 
 const PORT = process.env.PORT || 3000;
 
@@ -45,7 +44,7 @@ const connectWithRetry = async (retries = 5, delay = 5000) => {
 connectWithRetry();
 
 var app = express();
-app.set('trust proxy', 1); // Trust the first proxy
+app.set("trust proxy", 1); // Trust the first proxy
 
 const allowedOrigins = ["https://allospace.co", "http://localhost:5173"];
 app.use(
@@ -58,6 +57,8 @@ app.use(
       }
     },
     credentials: true, // Enable if your app requires cookies
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
 
