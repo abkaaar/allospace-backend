@@ -97,6 +97,7 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
       email: user.email,
       phoneNumber: user.phone,
       role: user.role,
+      country: user.country,
       companyName: user.companyName,
       address: user.address,
       name: user.name, // Add any additional fields you want to include
