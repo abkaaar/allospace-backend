@@ -7,6 +7,64 @@ const crypto = require("crypto");
 const { asyncHandler } = require("../middlewares/error");
 const Paystack = require('paystack-api'); // Ensure you have the correct package
 const paystackApi = Paystack(process.env.PAYSTACK_SECRET_KEY); // Initialize with your secret key
+const { OAuth2Client } = require('google-auth-library');
+const jwt = require('jsonwebtoken');
+
+// Initialize Google OAuth client
+const googleClient = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+// Google Login Controller
+module.exports.googleLogin = asyncHandler(async (req, res, next) => {
+  const { token } = req.body;
+
+  if (!token) {
+    return res.status(400).json({ message: "Google token is required" });
+  }
+
+  try {
+    // Verify Google token
+    const ticket = await googleClient.verifyIdToken({
+      idToken: token,
+      audience: process.env.GOOGLE_CLIENT_ID,
+    });
+
+    const payload = ticket.getPayload();
+    const { sub: googleId, email, name, picture } = payload; // 'sub' is the Google User ID
+
+    // Check if user already exists
+    let user = await User.findOne({ googleId });
+
+    if (!user) {
+      // Create a new user if they don't exist
+      user = await User.create({
+        name,
+        email,
+        googleId,
+        provider: "google", // Ensure provider is set
+        role: "customer", // Default role for Google sign-ins
+      });
+    }
+
+    // Generate token
+    const authToken = createSecretToken(user._id);
+
+    res.cookie("token", authToken, {
+      withCredentials: true,
+      httpOnly: false,
+    });
+
+    res.status(200).json({
+      message: "Google login successful",
+      success: true,
+      token: authToken,
+      user: { id: user.id ,name, email, picture, role: user.role },
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(401).json({ message: "Invalid Google token" });
+  }
+});
+
 
 
 module.exports.Signup = asyncHandler(async (req, res, next) => {
@@ -85,7 +143,7 @@ module.exports.Login = asyncHandler(async (req, res, next) => {
     path: '/',
   });
 
-  console.log("TOKEN: ", token)
+  // console.log("TOKEN: ", token)
 
   res.status(201).json({
     message: "User logged in successfully",

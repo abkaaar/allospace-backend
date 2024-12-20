@@ -22,8 +22,7 @@ const bookingSchema = new mongoose.Schema({
   },
   phoneNumber: {
     type: String,
-    required: true
-  },
+   },
   totalPrice:{
     type: Number,
     required: true

@@ -1,9 +1,13 @@
 const express = require("express");
 const router = express.Router();
-const { Signup, Login, forgotPassword, resetPassword } = require("../controllers/userController");
+const {googleLogin ,Signup, Login, forgotPassword, resetPassword } = require("../controllers/userController");
 const {userVerification, isHost} = require("../middlewares/AuthMiddleware")
 const user = require('../controllers/userController')
  
+
+// Google Login route
+router.post('/google', googleLogin); // Endpoint for Google Login
+
 router.post("/register", Signup);
 router.post("/login", Login);
 router.post('/dashboard', userVerification);

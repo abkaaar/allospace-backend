@@ -4,6 +4,17 @@ const crypto = require("crypto");
 const jwt = require("jsonwebtoken");
 
 const UserSchema = new mongoose.Schema({
+   googleId: {
+      type: String, // Stores the Google User ID
+      unique: true,
+   },
+
+   provider: {
+      type: String,
+      enum: ['google', 'credential'], // To distinguish between Google and credential login
+      default: 'credential',
+   },
+
    name:{
       type: String,
       required: [true, "Your name is required"],
@@ -47,9 +58,15 @@ const UserSchema = new mongoose.Schema({
 
    password:{
       type: String,
-      required: [true, "Your password is required"],
       minlength: 6,
-      // select: false,
+      validate: {
+         validator: function (value) {
+            // Only required if provider is 'credential'
+            return this.provider === 'google' || value;
+         },
+         message: "Your password is required",
+      },
+      
    },
    resetPasswordToken: String,
    resetPasswordExpire: Date,
