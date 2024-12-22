@@ -57,7 +57,7 @@ const SpaceSchema = new mongoose.Schema({
   type: {
     type: String,
     enum: ["Office", "Coworking space", "Meeting room", "Conference room", "Event space", "Dedicated desk"],
-    default: "coworking space",
+    default: "Coworking space",
   },
   term: {
     type: String,
