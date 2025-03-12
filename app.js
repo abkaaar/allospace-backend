@@ -48,7 +48,7 @@ connectWithRetry();
 var app = express();
 app.set("trust proxy", 1); // Trust the first proxy
 
-const allowedOrigins = ["https://allospace.co", "http://localhost:5173"];
+const allowedOrigins = ["https://allospace.co", "http://localhost:5173", "https://www.allospace.co"];
 app.use(
   cors({
     origin: function (origin, callback) {
