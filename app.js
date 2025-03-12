@@ -12,6 +12,8 @@ const DATABASE_URL = process.env.DATABASE_URL;
 const AuthRoute = require("./routes/AuthRoute");
 const SpaceRoute = require("./routes/spaceRoute");
 const BookRoute = require("./routes/BookingRoute");
+const ReviewRoute = require("./routes/ReviewRoute");
+
 const ErrorResponse = require("./utils/errorResponse");
 const { errorHandler } = require("./middlewares/error");
 const rateLimit = require("express-rate-limit");
@@ -96,6 +98,7 @@ app.use((req, res, next) => {
 app.use("/api/auth", AuthRoute);
 app.use("/", SpaceRoute);
 app.use("/", BookRoute);
+app.use("/", ReviewRoute);
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {

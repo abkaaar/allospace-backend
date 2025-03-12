@@ -76,8 +76,13 @@ const SpaceSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: "User", 
     required: true },
-
-  paystackSubaccountId: { type: String, required: true }
+  paystackSubaccountId: { type: String, required: true },
+  averageRating: { 
+    type: Number, 
+    min: 1, // Minimum value allowed is 1
+    max: 5, // Maximum value allowed is 5
+    default: 0, // Default to 0 until ratings are provided 
+  },
 });
 
 // Pre-save middleware to generate the slug

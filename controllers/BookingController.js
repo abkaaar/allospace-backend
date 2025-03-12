@@ -6,7 +6,7 @@ const paystackApi = require("../api/paystackApi");
 exports.createBooking = async (req, res) => {
   const { user_id, space_id, name, phoneNumber, email, startDate, totalPrice } = req.body;
   
-  console.log(user_id, space_id, name, phoneNumber, email, startDate, totalPrice);
+  // console.log(user_id, space_id, name, phoneNumber, email, startDate, totalPrice);
   // Generate a unique reference for the transaction
   const reference = `booking_${Date.now()}`;
 
